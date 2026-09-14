@@ -19,7 +19,7 @@ by `e2e/node-up.sh` (a single node does not produce blocks, so finality can only
 ## Steps and assertions
 
 1. **Derive** `Account.fromMnemonic(JANZEER_E2E_MNEMONIC)` → address `0x06e1c0fa9955a700876f8cb0acc7f13fba9fb8ba`.
-2. **Version gate** REST `info/version` → `version == "0.0.2"`, envelope `version == "1.1.0"`; the SDK's `SPEC_VERSION` must match or the test fails early with a clear message.
+2. **Version + network gate** REST `info` → `version == "0.0.3"`, envelope `version == "1.1.0"`; the SDK's `SPEC_VERSION` must match or the test fails early with a clear message. Read `networkId` from the same response (`janzeer` on mainnet, `janzeer-testnet` on the public testnet; `JANZEER_NETWORK_ID` from `node-up.sh` says which is expected) and pass it as `networkId` to **every** transaction built below — a transaction signed for the wrong network id is rejected (it is in the preimage), so this step proves the SDK's network knob end to end.
 3. **Account** RPC `janzeer_getAccount(address)` → `balance > 0`; remember `balance0`; `nonce = nextNonce`.
 4. **Subscribe first** open WS, `janzeer_subscribe("addressActivity", {addresses:[recipient]})` → subscription id (16 hex chars).
 5. **Build + sign** transfer `{to: recipient, amount: "1.25", fee: "0.01", memo: "sdk-e2e-<lang>", nonce, timestamp: now}`. Assert the SDK's `hash` equals double-SHA256 of its own preimage and the signature verifies locally.

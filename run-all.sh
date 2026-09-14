@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Owner-only: parity suites + e2e of every SDK (and the parity checks of the apps) against ONE running network.
 #   ./e2e/node-up.sh && ./run-all.sh ; ./e2e/node-down.sh
+#   NETWORK=testnet ./e2e/node-up.sh && NETWORK=testnet ./run-all.sh   # same, on the janzeer-testnet id (proves the SDKs' networkId knob)
 # Skips any repo that is not present. Exit 1 if anything fails.
 set -uo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd); ROOT=$(cd "$HERE/.." && pwd)
