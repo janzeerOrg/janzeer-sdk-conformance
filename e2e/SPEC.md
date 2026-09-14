@@ -14,6 +14,7 @@ by `e2e/node-up.sh` (a single node does not produce blocks, so finality can only
 | `JANZEER_WS_URL` | `ws://localhost:7029/rpc/ws` | JSON-RPC over WebSocket (a DIFFERENT node than the one the tx is sent to — proves gossip) |
 | `JANZEER_E2E_MNEMONIC` | `abandon ×11 about` | faucet wallet (`--janzeer.dev-fund` funds it at genesis) |
 | `JANZEER_E2E_RECIPIENT` | `0x598b1301acef3baba6ce25e38dd17b723f7b98b1` | recipient (never spends) |
+| `JANZEER_E2E_VALIDATOR_MNEMONIC` | first anchor wallet (from `j_helper/out/anchors.json`, dev net only) | a VALIDATOR wallet — token CREATE is validator-only; examples/tests that create tokens skip when unset |
 
 ## Steps and assertions
 

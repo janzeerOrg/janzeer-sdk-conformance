@@ -19,6 +19,14 @@ export JANZEER_WS_URL=ws://localhost:7029/rpc/ws
 export JANZEER_E2E_MNEMONIC="abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
 export JANZEER_E2E_RECIPIENT=0x598b1301acef3baba6ce25e38dd17b723f7b98b1
 ENV
+  # Dev net only: the first anchor's WALLET mnemonic (token CREATE needs a validator wallet). j_helper/out/anchors.json
+  # is the git-ignored output of `nodes.sh fresh`; absent → the token example is skipped.
+  local anchors=$HERE/../../j_helper/out/anchors.json
+  if [ -f "$anchors" ]; then
+    local m
+    m=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['anchors'][0]['mnemonic'])" "$anchors" 2>/dev/null || true)
+    [ -n "$m" ] && echo "export JANZEER_E2E_VALIDATOR_MNEMONIC=\"$m\""
+  fi
 }
 [ "${1:-}" = "--env" ] && { print_env; exit 0; }
 
