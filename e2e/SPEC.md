@@ -1,6 +1,6 @@
 # Janzeer SDK end-to-end conformance flow
 
-Every official SDK (TypeScript, Dart, Kotlin, Go) implements this flow as an environment-gated test
+Every official SDK (TypeScript, Dart, Kotlin, Python, Go) implements this flow as an environment-gated test
 (`JANZEER_NODE_URL` unset → skipped). The same flow, trimmed, is each SDK's README quickstart, so the
 documentation is executable by construction. It runs against the local 4-anchor developer network started
 by `e2e/node-up.sh` (a single node does not produce blocks, so finality can only be proven on the 4-node net).
@@ -33,7 +33,7 @@ by `e2e/node-up.sh` (a single node does not produce blocks, so finality can only
 13. **Negative: bad signature** the same body with another tx's signature → `TxRejectedError` with `type == "INCORRECT_SIGNATURE"`.
 14. **Negative: bad address** `janzeer_getBalance("0x12")` → `RpcError` code `-32602`.
 
-Each language uses its own memo (`sdk-e2e-ts`, `sdk-e2e-dart`, `sdk-e2e-kotlin`, `sdk-e2e-go`) so `run-all.sh` can run them back-to-back against one network without the addressActivity assertions cross-matching.
+Each language uses its own memo (`sdk-e2e-ts`, `sdk-e2e-dart`, `sdk-e2e-kotlin`, `sdk-e2e-python`, `sdk-e2e-go`) so `run-all.sh` can run them back-to-back against one network without the addressActivity assertions cross-matching.
 
 ## Pass criteria
 

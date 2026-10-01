@@ -47,3 +47,13 @@ proves the network knob end to end. The vectors stay on `janzeer`.
 ```
 
 Licensed under Apache-2.0 (see `LICENSE`).
+
+## Official SDKs tested against this kit
+
+| Language | Repository |
+|---|---|
+| TypeScript / JavaScript | <https://github.com/janzeerorg/janzeer-sdk-ts> |
+| Dart / Flutter | <https://github.com/janzeerorg/janzeer-sdk-dart> |
+| Kotlin / JVM / Android | <https://github.com/janzeerorg/janzeer-sdk-kotlin> |
+| Python | <https://github.com/janzeerorg/janzeer-sdk-python> |
+| Go | <https://github.com/janzeerorg/janzeer-sdk-go> |

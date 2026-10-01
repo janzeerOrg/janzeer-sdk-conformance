@@ -28,12 +28,27 @@ export JANZEER_E2E_MNEMONIC="abandon abandon abandon abandon abandon abandon aba
 export JANZEER_E2E_RECIPIENT=0x598b1301acef3baba6ce25e38dd17b723f7b98b1
 export JANZEER_NETWORK_ID=$([ "${NETWORK:-mainnet}" = mainnet ] && echo janzeer || echo "janzeer-${NETWORK}")
 ENV
-  # Dev net only: the first anchor's WALLET mnemonic (token CREATE needs a validator wallet). j_helper/out/anchors.json
-  # is the git-ignored output of `nodes.sh fresh`; absent → the token example is skipped.
+  # Dev net only: the first anchor's WALLET mnemonic (token CREATE needs a validator wallet). j_helper/out/anchors.json is
+  # the git-ignored output of `nodes.sh fresh`. It is exported ONLY when that file describes the network that is running
+  # here: its first anchor must be the node answering on :7019, and it must not be a mainnet ceremony file (those carry
+  # "genesisWallets"). Since the mainnet ceremony that file holds REAL seeds — never print one into an environment.
   local anchors=$HERE/../../j_helper/out/anchors.json
   if [ -f "$anchors" ]; then
     local m
-    m=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['anchors'][0]['mnemonic'])" "$anchors" 2>/dev/null || true)
+    m=$(python3 - "$anchors" <<'PYEOF' 2>/dev/null || true
+import json, sys, urllib.request
+a = json.load(open(sys.argv[1]))
+if "genesisWallets" in a:
+    sys.exit(0)
+try:
+    info = json.load(urllib.request.urlopen("http://localhost:7019/api/v1/info", timeout=3))["payload"]
+except Exception:
+    sys.exit(0)
+first = a["anchors"][0]
+if str(info.get("nodeKey", "")).lower() == str(first.get("nodePublic", "")).lower() and first.get("mnemonic"):
+    print(first["mnemonic"])
+PYEOF
+)
     [ -n "$m" ] && echo "export JANZEER_E2E_VALIDATOR_MNEMONIC=\"$m\""
   fi
 }

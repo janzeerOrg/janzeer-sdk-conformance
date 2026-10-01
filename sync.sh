@@ -10,7 +10,8 @@ CONSUMERS=(
   "sdk_ts/test/vectors"
   "sdk_dart/test/vectors"
   "sdk_kotlin/core/src/test/resources/vectors"
-  "sdk_go/internal/testdata"
+  "sdk_python/tests/vectors"
+  "sdk_go/internal/vectors"
   "j_frontend/test"
   "jpong/web/test"
   "wallet/test"
@@ -34,6 +35,7 @@ check() {
       [ -f "$ROOT/$c/$f" ] || continue     # apps only vendor the parity file
       cmp -s "$HERE/vectors/$f" "$ROOT/$c/$f" || { echo "DRIFT: $c/$f differs from vectors/$f"; rc=1; }
     done
+    if [ -f "$ROOT/$c/SHA256SUMS" ]; then cmp -s "$HERE/vectors/SHA256SUMS" "$ROOT/$c/SHA256SUMS" || { echo "DRIFT: $c/SHA256SUMS differs from vectors/SHA256SUMS"; rc=1; }; fi
   done
   [ $rc -eq 0 ] && echo "vectors in sync" || echo "vectors OUT OF SYNC — run ./sync.sh"
   return $rc
@@ -52,6 +54,8 @@ case "${1:-}" in
       done
     done
     (cd "$HERE/vectors" && sha256sum "${FILES[@]}" > SHA256SUMS) && echo "SHA256SUMS refreshed"
+    # consumers that keep the checksum file next to their copy (their CI verifies it) get the refreshed one
+    for c in "${CONSUMERS[@]}"; do [ -f "$ROOT/$c/SHA256SUMS" ] && cp "$HERE/vectors/SHA256SUMS" "$ROOT/$c/SHA256SUMS" && echo "→ $c/SHA256SUMS"; done
     ;;
   *) echo "usage: $0 [--check|--regen]"; exit 1 ;;
 esac
