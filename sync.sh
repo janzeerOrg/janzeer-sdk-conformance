@@ -15,6 +15,7 @@ CONSUMERS=(
   "j_frontend/test"
   "jpong/web/test"
   "wallet/test"
+  "cli/core/src/jvmMain/resources/vectors"
 )
 FILES=(wallet-parity-vectors.json vault-fixture.json)
 
