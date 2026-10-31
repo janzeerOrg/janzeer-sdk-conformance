@@ -57,3 +57,4 @@ Licensed under Apache-2.0 (see `LICENSE`).
 | Kotlin / JVM / Android | <https://github.com/janzeerorg/janzeer-sdk-kotlin> |
 | Python | <https://github.com/janzeerorg/janzeer-sdk-python> |
 | Go | <https://github.com/janzeerorg/janzeer-sdk-go> |
+| `jz` command-line client (Kotlin, on the Kotlin SDK; `jz vectors check` runs these vectors) | <https://github.com/janzeerorg/janzeer-cli> |
