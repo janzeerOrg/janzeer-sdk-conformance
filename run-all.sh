@@ -24,7 +24,7 @@ PY=python3; [ -x "$ROOT/sdk_python/.venv/bin/python" ] && PY="$ROOT/sdk_python/.
 command -v go >/dev/null 2>&1 || { [ -x "$HOME/sdk/go/bin/go" ] && export PATH="$HOME/sdk/go/bin:$PATH"; }
 [ -d "$ROOT/sdk_go" ]     && run "sdk_go unit+vectors"   bash -c "cd '$ROOT/sdk_go' && go test -count=1 ./..." \
                           && run "sdk_go e2e"            bash -c "cd '$ROOT/sdk_go' && go test -count=1 -tags e2e -run TestE2E ."
-[ -d "$ROOT/cli" ]        && run "jz (CLI) vectors+e2e"  bash -c "cd '$ROOT/cli' && ./gradlew -q :jz-app:fatJar && java -jar app/build/libs/jz-*.jar vectors check >/dev/null && scripts/e2e.sh"
+[ -d "$ROOT/cli" ]        && run "jz (CLI) vectors+e2e"  bash -c "cd '$ROOT/cli' && ./gradlew -q :jz-app:fatJar && java -jar app/build/libs/jz-[0-9]*.jar vectors check >/dev/null && scripts/e2e.sh"
 [ -f "$ROOT/j_frontend/scripts/wallet-parity-check.mjs" ] && run "j_frontend parity" bash -c "cd '$ROOT/j_frontend' && node scripts/wallet-parity-check.mjs"
 [ -f "$ROOT/jpong/web/package.json" ] && run "jpong/web parity" bash -c "cd '$ROOT/jpong/web' && npm run --silent test:wallet-parity"
 [ -f "$ROOT/wallet/pubspec.yaml" ] && run "wallet (Flutter) parity" bash -c "cd '$ROOT/wallet' && flutter test test/janzeer_crypto_parity_test.dart"
